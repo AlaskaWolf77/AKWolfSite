@@ -22,6 +22,12 @@ body {
     border-bottom: 1px solid #30363d;
 }
 
+.logo img {
+    height: 32px;
+    width: auto;
+    display: block;
+}
+
 .navbar .logo {
     font-weight: bold;
     font-size: 1.1rem;
