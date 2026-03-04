@@ -181,7 +181,7 @@ button:focus-visible{
 /* Subtle GitHub-ish background grid + glows */
 .hero-bg{
     position: absolute;
-    inset: -100px 0 -100px 0;
+    inset: -100px 0 0 0;
     z-index: -1;
     pointer-events: none;
 
@@ -191,7 +191,7 @@ button:focus-visible{
       linear-gradient(to bottom, rgba(48,54,61,0.25) 1px, transparent 1px),
       radial-gradient(900px 420px at 50% 0%, rgba(88,166,255,0.18), transparent 70%),
       radial-gradient(920px 420px at 65% 20%, rgba(46,160,67,0.12), transparent 70%);
-    background-size: 88px 88px, 88px 88px, auto, auto;
+    background-size: 100px 100px, 100px 100px, auto, auto;
     background-position: center, center, center, center;
 
     mask-image: radial-gradient(closest-side at 50% 10%, black 55%, transparent 100%);
