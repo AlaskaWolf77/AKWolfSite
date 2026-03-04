@@ -4,55 +4,135 @@
     <meta charset="UTF-8">
     <title>AlaskaWolf</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Favicons -->
     <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+
+    <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
+<a class="skip-link" href="#work">Skip to content</a>
 
 <header class="navbar">
-    <div class="logo">
+    <a class="logo" href="#top" aria-label="Home">
         <img src="assets/images/AKLogo.webp" alt="AlaskaWolf logo">
-    </div>
-    <nav>
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="nav-links" aria-label="Primary">
         <a href="#work">Work</a>
         <a href="#about">About</a>
         <a href="#tools">Tools</a>
-        <a href="https://github.com/" target="_blank">GitHub</a>
+        <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
     </nav>
+
+    <!-- Mobile hamburger -->
+    <button class="nav-toggle"
+            type="button"
+            aria-label="Open menu"
+            aria-controls="mobile-menu"
+            aria-expanded="false">
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+    </button>
 </header>
 
-<section class="hero">
-    <h1>Text. Here. Text.</h1>
-    <p>
-        Creative experiments and technical projects built with intention.
-        No tracking. No nonsense. Just clean implementation.
-    </p>
-    <div class="hero-buttons">
-        <a href="#work" class="btn primary">View Work</a>
-        <a href="#about" class="btn secondary">About Me</a>
-    </div>
-</section>
+<!-- Mobile dropdown menu -->
+<nav id="mobile-menu" class="mobile-menu" aria-label="Mobile" hidden>
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#tools">Tools</a>
+    <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
+</nav>
 
-<section id="work" class="section">
-    <h2>Selected Work</h2>
-    <div class="grid">
-        <div class="card">Artwork 1</div>
-        <div class="card">Artwork 2</div>
-        <div class="card">Artwork 3</div>
-    </div>
-</section>
+<main id="top">
+    <section class="hero">
+        <div class="hero-bg" aria-hidden="true"></div>
 
-<section id="about" class="section">
-    <h2>About</h2>
-    <p class="about-text">
-        text here text here text here
-    </p>
-</section>
+        <h1>Text. Here. Text.</h1>
+        <p>
+            Creative experiments and technical projects built with intention.
+            No tracking. No nonsense. Just clean implementation.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="#work" class="btn primary">View Work</a>
+            <a href="#about" class="btn secondary">About Me</a>
+        </div>
+    </section>
+
+    <section id="work" class="section">
+        <h2>Selected Work</h2>
+        <div class="grid">
+            <div class="card">Artwork 1</div>
+            <div class="card">Artwork 2</div>
+            <div class="card">Artwork 3</div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <h2>About</h2>
+        <p class="about-text">
+            text here text here text here
+        </p>
+    </section>
+
+    <section id="tools" class="section">
+        <h2>Tools</h2>
+        <p class="about-text">
+            (Add your tools here later.)
+        </p>
+    </section>
+</main>
 
 <footer>
     <p>© AlaskaWolf</p>
 </footer>
 
+<script>
+(() => {
+  const btn = document.querySelector('.nav-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  const setOpen = (open) => {
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    menu.hidden = !open;
+    document.body.classList.toggle('menu-open', open);
+  };
+
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    setOpen(!open);
+  });
+
+  // Close when clicking a link
+  menu.addEventListener('click', (e) => {
+    if (e.target.closest('a')) setOpen(false);
+  });
+
+  // Close when clicking outside
+  document.addEventListener('click', (e) => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    if (!open) return;
+    if (e.target.closest('#mobile-menu') || e.target.closest('.nav-toggle')) return;
+    setOpen(false);
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setOpen(false);
+  });
+
+  // Safety: if resized to desktop, close menu
+  window.addEventListener('resize', () => {
+    if (window.matchMedia('(min-width: 801px)').matches) setOpen(false);
+  });
+})();
+</script>
 </body>
 </html>
