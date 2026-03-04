@@ -5,21 +5,87 @@
     box-sizing: border-box;
 }
 
+:root{
+    --bg: #0d1117;
+    --panel: #161b22;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --muted: #8b949e;
+    --link: #58a6ff;
+    --green: #238636;
+    --greenHover: #2ea043;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; animation: none !important; }
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: #0d1117;
-    color: #c9d1d9;
+    background-color: var(--bg);
+    color: var(--text);
     line-height: 1.6;
+}
+
+body.menu-open::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 900;
+}
+
+/* Skip link */
+.skip-link{
+    position: absolute;
+    left: -9999px;
+    top: 8px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 8px;
+    z-index: 9999;
+}
+.skip-link:focus{
+    left: 12px;
+}
+
+/* Focus ring (keyboard friendly) */
+a:focus-visible,
+button:focus-visible{
+    outline: 2px solid var(--link);
+    outline-offset: 2px;
+    border-radius: 8px;
 }
 
 /* Navbar */
 .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1100;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
-    background-color: #161b22;
-    border-bottom: 1px solid #30363d;
+    gap: 12px;
+
+    padding: 0.9rem 1.25rem;
+    background-color: rgba(22, 27, 34, 0.88);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
 }
 
 .logo img {
@@ -28,65 +94,148 @@ body {
     display: block;
 }
 
-.navbar .logo {
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: #ffffff;
-}
-
-.navbar nav a {
-    color: #c9d1d9;
+/* Desktop nav links */
+.nav-links a {
+    color: var(--text);
     text-decoration: none;
-    margin-left: 1.5rem;
+    margin-left: 1.25rem;
     font-size: 0.95rem;
 }
 
-.navbar nav a:hover {
-    color: #58a6ff;
+.nav-links a:hover {
+    color: var(--link);
+}
+
+/* Hamburger button */
+.nav-toggle{
+    display: none; /* shown on small screens */
+    width: 42px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: #0b1220;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 8px;
+}
+
+.nav-toggle:hover{
+    border-color: var(--link);
+}
+
+.nav-toggle-bar{
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--text);
+    border-radius: 999px;
+}
+
+/* Mobile dropdown */
+/* Mobile dropdown as an overlay (does not push content) */
+.mobile-menu{
+  position: fixed;
+  top: 64px;              /* set to your navbar height */
+  right: 12px;
+  left: 12px;
+  z-index: 1000;
+
+  border: 1px solid var(--border);
+  background: rgba(22, 27, 34, 0.96);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  overflow: hidden;
+
+  /* nice drop shadow */
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+}
+
+.mobile-menu a{
+    display: block;
+    padding: 12px 14px;
+    color: var(--text);
+    text-decoration: none;
+    border-top: 1px solid rgba(48, 54, 61, 0.65);
+}
+
+.mobile-menu a:first-child{
+    border-top: none;
+}
+
+.mobile-menu a:hover{
+    background: #0b1220;
+    color: var(--link);
 }
 
 /* Hero Section */
 .hero {
+    position: relative;
     text-align: center;
-    padding: 6rem 2rem;
-    max-width: 900px;
-    margin: auto;
+    padding: 6rem 1.25rem 5rem;
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+/* Subtle GitHub-ish background grid + glows */
+.hero-bg{
+    position: absolute;
+    inset: -40px 0 0 0;
+    z-index: -1;
+    pointer-events: none;
+
+    /* grid */
+    background-image:
+      linear-gradient(to right, rgba(48,54,61,0.25) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(48,54,61,0.25) 1px, transparent 1px),
+      radial-gradient(600px 220px at 50% 0%, rgba(88,166,255,0.18), transparent 70%),
+      radial-gradient(520px 220px at 65% 20%, rgba(46,160,67,0.12), transparent 70%);
+    background-size: 48px 48px, 48px 48px, auto, auto;
+    background-position: center, center, center, center;
+
+    mask-image: radial-gradient(closest-side at 50% 10%, black 55%, transparent 100%);
+    opacity: 0.9;
 }
 
 .hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+    font-size: clamp(2.2rem, 5vw, 3.25rem);
+    margin-bottom: 0.9rem;
     color: #ffffff;
+    letter-spacing: -0.02em;
 }
 
 .hero p {
-    font-size: 1.2rem;
-    color: #8b949e;
-    margin-bottom: 2rem;
+    font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+    color: var(--muted);
+    margin: 0 auto 2rem;
+    max-width: 62ch;
 }
 
 /* Buttons */
 .btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
+    padding: 0.75rem 1.2rem;
+    border-radius: 10px;
     text-decoration: none;
-    font-weight: 500;
-    margin: 0 0.5rem;
+    font-weight: 600;
+    margin: 0 0.4rem;
     display: inline-block;
+    border: 1px solid transparent;
 }
 
 .primary {
-    background-color: #238636;
+    background-color: var(--green);
     color: white;
 }
 
 .primary:hover {
-    background-color: #2ea043;
+    background-color: var(--greenHover);
 }
 
 .secondary {
-    border: 1px solid #30363d;
-    color: #c9d1d9;
+    border: 1px solid var(--border);
+    color: var(--text);
+    background: rgba(13,17,23,0.2);
 }
 
 .secondary:hover {
@@ -95,50 +244,60 @@ body {
 
 /* Sections */
 .section {
-    padding: 4rem 2rem;
+    padding: 3.5rem 1.25rem;
     max-width: 1100px;
-    margin: auto;
+    margin: 0 auto;
 }
 
 .section h2 {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     font-size: 1.8rem;
-    border-bottom: 1px solid #30363d;
-    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.6rem;
 }
 
 /* Grid for artwork */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
 }
 
 .card {
-    background-color: #161b22;
-    border: 1px solid #30363d;
+    background-color: var(--panel);
+    border: 1px solid var(--border);
     padding: 2rem;
     text-align: center;
-    border-radius: 8px;
-    transition: 0.2s ease;
+    border-radius: 14px;
+    transition: transform 0.18s ease, border-color 0.18s ease;
 }
 
 .card:hover {
-    border-color: #58a6ff;
+    border-color: var(--link);
     transform: translateY(-4px);
 }
 
 /* About */
 .about-text {
     max-width: 700px;
-    color: #8b949e;
+    color: var(--muted);
 }
 
 /* Footer */
 footer {
     text-align: center;
-    padding: 2rem;
-    border-top: 1px solid #30363d;
+    padding: 2rem 1.25rem;
+    border-top: 1px solid var(--border);
     font-size: 0.9rem;
     color: #6e7681;
+}
+
+/* Responsive: swap links -> hamburger */
+@media (max-width: 800px){
+    .nav-links{
+        display: none;
+    }
+    .nav-toggle{
+        display: inline-flex;
+    }
 }
