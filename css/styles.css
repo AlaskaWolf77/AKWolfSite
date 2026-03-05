@@ -42,7 +42,7 @@ body::before{
   content: "";
   position: fixed;
   inset: 0;
-  background-image: url("/assets/images/hero-bg.png"); /* or .webp */
+  background-image: url("/assets/images/aurora.png"); /* or .webp */
   background-repeat: no-repeat;
   background-position: top center;
   background-size: cover; /* or: 1200px auto; if you want it not to stretch */
