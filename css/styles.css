@@ -32,6 +32,35 @@ body {
     line-height: 1.6;
 }
 
+body{
+  position: relative; /* needed for layering */
+  background-color: #0d1117;
+}
+
+/* Site-wide background image layer */
+body::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("/assets/images/hero-bg.png"); /* or .webp */
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover; /* or: 1200px auto; if you want it not to stretch */
+  opacity: 0.9;           /* tweak */
+  pointer-events: none;
+  z-index: -2;
+}
+
+/* Optional: add a subtle dark wash so text stays readable */
+body::after{
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(13,17,23,0.35);
+  pointer-events: none;
+  z-index: -1;
+}
+
 body.menu-open::before{
   content: "";
   position: fixed;
