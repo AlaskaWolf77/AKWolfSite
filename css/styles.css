@@ -286,7 +286,7 @@ button:focus-visible{
 .section h2 {
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
-    border-bottom: 1px solid var(--border);
+    /*border-bottom: 1px solid var(--border);*/
     padding-bottom: 0.6rem;
 }
 
