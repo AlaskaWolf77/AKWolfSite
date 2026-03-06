@@ -1,137 +1,127 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>AlaskaWolf</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Favicons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
-
-    <link rel="stylesheet" href="css/styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Portfolio</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-<a class="skip-link" href="#work">Skip to content</a>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo-slot">
+        <img src="LOGO_HERE.svg" alt="Logo">
+      </div>
+      <div class="brand-name">Your Name</div>
+    </div>
 
-<header class="navbar">
-    <a class="logo" href="/" aria-label="Home">
-        <img src="assets/images/AKLogo.webp" alt="AlaskaWolf logo">
-    </a>
-
-    <!-- Desktop nav -->
-    <nav class="nav-links" aria-label="Primary">
-        <a href="#work">Workaaaa</a>
-        <a href="#about">About</a>
-        <a href="#tools">Tools</a>
-        <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <nav class="nav">
+      <a href="#artwork">Artwork</a>
+      <a href="#about">About</a>
+      <a href="#">Tools</a>
+      <a class="external" href="https://github.com/YOUR_USERNAME" target="_blank" rel="noreferrer">GitHub</a>
     </nav>
+  </header>
 
-    <!-- Mobile hamburger -->
-    <button class="nav-toggle"
-            type="button"
-            aria-label="Open menu"
-            aria-controls="mobile-menu"
-            aria-expanded="false">
-        <span class="nav-toggle-bar" aria-hidden="true"></span>
-        <span class="nav-toggle-bar" aria-hidden="true"></span>
-        <span class="nav-toggle-bar" aria-hidden="true"></span>
-    </button>
-</header>
-
-<!-- Mobile dropdown menu -->
-<nav id="mobile-menu" class="mobile-menu" aria-label="Mobile" hidden>
-    <a href="#work">Work</a>
-    <a href="#about">About</a>
-    <a href="#tools">Tools</a>
-    <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
-</nav>
-
-<main id="top">
+  <main>
     <section class="hero">
+      <div class="hero-bg" id="heroBg"></div>
+      <div class="hero-fade" id="heroFade"></div>
 
-        <h1>This site is currently under construction</h1>
-        <p>
-            Creative experiments and technical projects built with intention.
-            No tracking. No nonsense. Just clean implementation.
-        </p>
-
-        <div class="hero-buttons">
-            <a href="#work" class="btn primary">View Work</a>
-            <a href="#about" class="btn secondary">About Me</a>
+      <div class="container hero-content">
+        <div class="hero-top-text" id="heroTopText">
+          <h1>some things i've made</h1>
+          <p>inkscape • blender • krita</p>
         </div>
-    </section>
 
-    <section id="work" class="section">
-        <h2>Selected Work</h2>
-        <div class="grid">
-            <div class="card">Artwork 1</div>
-            <div class="card">Artwork 2</div>
-            <div class="card">Artwork 3</div>
+        <div class="hero-card" id="heroCard">
+          <h2 class="hero-title">Artwork</h2>
+          <p class="hero-sub">A few sections of stuff I’ve made.</p>
+
+          <div class="hero-actions">
+            <a class="btn" href="#inkscape">Inkscape</a>
+            <a class="btn" href="#blender">Blender</a>
+            <a class="btn" href="#krita">Krita</a>
+          </div>
         </div>
+      </div>
     </section>
 
-    <section id="about" class="section">
-        <h2>About</h2>
-        <p class="about-text">
-            text here text here text here
-        </p>
+    <section id="artwork" class="anchor-offset artwork-overview">
+      <div class="container">
+        <h2 class="section-title">Artwork</h2>
+        <p class="section-sub">Sorted by tool.</p>
+      </div>
     </section>
 
-    <section id="tools" class="section">
-        <h2>Tools</h2>
-        <p class="about-text">
-            (Add your tools here later.)
-        </p>
+    <section id="inkscape" class="art-subsection anchor-offset">
+      <div class="art-bg" style="background-image:
+        linear-gradient(to bottom, rgba(13,17,23,0.24), rgba(13,17,23,0.92)),
+        url('images/inkscape-bg.jpg');"></div>
+
+      <div class="container art-subsection-content">
+        <div class="section-heading">
+          <h2 class="section-title">Inkscape</h2>
+          <p class="section-sub">Vector work, logos, icons, and illustration.</p>
+        </div>
+
+        <div class="masonry-gallery" data-gallery="inkscape"></div>
+      </div>
     </section>
-</main>
 
-<footer>
-    <p>© AlaskaWolf</p>
-</footer>
+    <section id="blender" class="art-subsection anchor-offset">
+      <div class="art-bg" style="background-image:
+        linear-gradient(to bottom, rgba(13,17,23,0.24), rgba(13,17,23,0.92)),
+        url('images/blender-bg.jpg');"></div>
 
-<script>
-(() => {
-  const btn = document.querySelector('.nav-toggle');
-  const menu = document.getElementById('mobile-menu');
+      <div class="container art-subsection-content">
+        <div class="section-heading">
+          <h2 class="section-title">Blender</h2>
+          <p class="section-sub">3D models, scenes, and renders.</p>
+        </div>
 
-  const setOpen = (open) => {
-    btn.setAttribute('aria-expanded', String(open));
-    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    menu.hidden = !open;
-    document.body.classList.toggle('menu-open', open);
-  };
+        <div class="masonry-gallery" data-gallery="blender"></div>
+      </div>
+    </section>
 
-  btn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const open = btn.getAttribute('aria-expanded') === 'true';
-    setOpen(!open);
-  });
+    <section id="krita" class="art-subsection anchor-offset">
+      <div class="art-bg" style="background-image:
+        linear-gradient(to bottom, rgba(13,17,23,0.24), rgba(13,17,23,0.92)),
+        url('images/krita-bg.jpg');"></div>
 
-  // Close when clicking a link
-  menu.addEventListener('click', (e) => {
-    if (e.target.closest('a')) setOpen(false);
-  });
+      <div class="container art-subsection-content">
+        <div class="section-heading">
+          <h2 class="section-title">Krita</h2>
+          <p class="section-sub">Paintings, sketches, and digital art.</p>
+        </div>
 
-  // Close when clicking outside
-  document.addEventListener('click', (e) => {
-    const open = btn.getAttribute('aria-expanded') === 'true';
-    if (!open) return;
-    if (e.target.closest('#mobile-menu') || e.target.closest('.nav-toggle')) return;
-    setOpen(false);
-  });
+        <div class="masonry-gallery" data-gallery="krita"></div>
+      </div>
+    </section>
 
-  // Close on Escape
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') setOpen(false);
-  });
+    <div class="pixel-divider"></div>
 
-  // Safety: if resized to desktop, close menu
-  window.addEventListener('resize', () => {
-    if (window.matchMedia('(min-width: 801px)').matches) setOpen(false);
-  });
-})();
-</script>
+    <section id="about" class="anchor-offset">
+      <div class="container">
+        <h2 class="section-title">About</h2>
+        <div class="card large">
+          <p>Add information about yourself here.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <div>© <span id="year"></span> Your Name</div>
+      <div class="footer-links">
+        <a href="#artwork">Artwork</a>
+        <a href="#about">About</a>
+        <a href="https://github.com/YOUR_USERNAME" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
