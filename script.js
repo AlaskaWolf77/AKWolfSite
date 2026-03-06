@@ -4,6 +4,7 @@ const heroFade = document.getElementById("heroFade");
 const heroTopText = document.getElementById("heroTopText");
 const heroCard = document.getElementById("heroCard");
 const year = document.getElementById("year");
+const reduceHeroMotionQuery = window.matchMedia("(max-width: 800px)");
 
 function clamp(n, min, max) {
   return Math.max(min, Math.min(max, n));
@@ -14,6 +15,16 @@ function easeOutCubic(t) {
 }
 
 function onScroll() {
+  if (reduceHeroMotionQuery.matches) {
+    heroBg.style.transform = "translate3d(0, 0, 0) scale(1.02)";
+    heroBg.style.opacity = "1";
+    heroFade.style.opacity = "0.35";
+    heroTopText.style.transform = "translate3d(0, 0, 0)";
+    heroCard.style.opacity = "1";
+    heroCard.style.transform = "translate3d(0, 0, 0)";
+    return;
+  }
+
   const rect = hero.getBoundingClientRect();
   const heroHeight = hero.offsetHeight;
 
@@ -106,6 +117,7 @@ if (year) {
 
 window.addEventListener("scroll", onScroll, { passive: true });
 window.addEventListener("resize", onScroll);
+reduceHeroMotionQuery.addEventListener("change", onScroll);
 
 onScroll();
 loadArtworks();
