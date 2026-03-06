@@ -106,7 +106,7 @@ img{
   inset:0;
   background:
     linear-gradient(to bottom, rgba(13,17,23,0.08), rgba(13,17,23,0.88)),
-    url("space.webp");
+    url("images/space.webp");
   background-size:cover;
   background-position:center;
   will-change:transform, opacity;
