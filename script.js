@@ -6,6 +6,9 @@ const heroFade = document.getElementById("heroFade");
 const heroTopText = document.getElementById("heroTopText");
 const year = document.getElementById("year");
 const artworkRevealGrid = document.querySelector("#artwork .reveal-sequence");
+const topbar = document.querySelector(".topbar");
+const navToggle = document.querySelector(".nav-toggle");
+const nav = document.getElementById("site-nav");
 
 function clamp(n, min, max) {
     return Math.max(min, Math.min(max, n));
@@ -35,6 +38,43 @@ function onScroll() {
 
 if (year) {
     year.textContent = new Date().getFullYear();
+}
+
+function setMobileNav(open) {
+    if (!topbar || !navToggle) return;
+
+    topbar.classList.toggle("is-nav-open", open);
+    navToggle.setAttribute("aria-expanded", String(open));
+}
+
+if (topbar && navToggle && nav) {
+    navToggle.addEventListener("click", () => {
+        setMobileNav(!topbar.classList.contains("is-nav-open"));
+    });
+
+    nav.addEventListener("click", (event) => {
+        if (event.target instanceof Element && event.target.closest("a")) {
+            setMobileNav(false);
+        }
+    });
+
+    document.addEventListener("click", (event) => {
+        if (event.target instanceof Node && !topbar.contains(event.target)) {
+            setMobileNav(false);
+        }
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            setMobileNav(false);
+        }
+    });
+
+    window.addEventListener("resize", () => {
+        if (window.innerWidth > 800) {
+            setMobileNav(false);
+        }
+    });
 }
 
 function revealArtworkCards() {
