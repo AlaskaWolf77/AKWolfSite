@@ -344,6 +344,8 @@ section{
 
   .hero-card{
     margin-bottom:80px;
+    opacity:1;
+    transform:translate3d(0,0,0);
   }
 
   .hero-top-text h1{
