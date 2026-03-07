@@ -4,7 +4,6 @@ const heroFade = document.getElementById("heroFade");
 const heroTopText = document.getElementById("heroTopText");
 const heroCard = document.getElementById("heroCard");
 const year = document.getElementById("year");
-
 function clamp(n, min, max) {
   return Math.max(min, Math.min(max, n));
 }
