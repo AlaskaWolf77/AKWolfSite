@@ -118,6 +118,24 @@ if (artworkRevealGrid) {
     }
 }
 
-window.addEventListener("scroll", onScroll, { passive: true });
+const mobileScrollMediaQuery = window.matchMedia("(max-width: 800px)");
+let mobileScrollTicking = false;
+
+function onScrollEvent() {
+    if (!mobileScrollMediaQuery.matches) {
+        onScroll();
+        return;
+    }
+
+    if (mobileScrollTicking) return;
+
+    mobileScrollTicking = true;
+    window.requestAnimationFrame(() => {
+        onScroll();
+        mobileScrollTicking = false;
+    });
+}
+
+window.addEventListener("scroll", onScrollEvent, { passive: true });
 window.addEventListener("resize", onScroll);
 onScroll();
