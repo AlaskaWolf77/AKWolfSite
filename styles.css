@@ -202,10 +202,27 @@ background:var(--panel);
     padding:15px;
 }
 
+.artwork-card{
+    color:inherit;
+    text-decoration:none;
+    transition:border-color 180ms ease, background 180ms ease;
+}
+
+.artwork-card:hover,
+.artwork-card:focus-visible{
+    border-color:#7dd3fc;
+    background:rgba(13,17,23,0.78);
+}
+
+.artwork-card:focus-visible{
+    outline:2px solid rgba(125,211,252,0.45);
+    outline-offset:3px;
+}
+
 .js #artwork .reveal-card{
     opacity:0;
     transform:translate3d(0, 20px, 0);
-    transition:opacity 550ms ease, transform 550ms ease;
+    transition:opacity 550ms ease, transform 550ms ease, border-color 180ms ease, background 180ms ease;
 }
 
 #artwork .reveal-card.is-visible{
