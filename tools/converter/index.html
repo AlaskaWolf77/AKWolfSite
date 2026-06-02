@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PNG/PDF Converter</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="../../index.html" aria-label="Home">
+      <img src="../../logotesting2.svg" alt="AlaskaWolf logo">
+    </a>
+    <nav class="nav">
+      <a href="../../index.html#artwork">Artwork</a>
+      <a href="../../index.html#about">About</a>
+      <a href="../index.html">Tools</a>
+    </nav>
+  </header>
+
+  <main class="tool-shell">
+    <section class="tool-panel" aria-labelledby="toolTitle">
+      <div class="tool-heading">
+        <p class="eyebrow">Offline tool</p>
+        <h1 id="toolTitle">PNG/PDF Converter</h1>
+      </div>
+
+      <div class="mode-tabs" role="tablist" aria-label="Converter mode">
+        <button class="mode-tab is-active" type="button" data-mode="png-to-pdf" role="tab" aria-selected="true">
+          PNG to PDF
+        </button>
+        <button class="mode-tab" type="button" data-mode="pdf-to-png" role="tab" aria-selected="false">
+          PDF to PNG
+        </button>
+      </div>
+
+      <div class="drop-zone" id="dropZone">
+        <input id="fileInput" class="file-input" type="file" accept="image/png" multiple>
+        <div class="drop-copy">
+          <h2 id="dropTitle">Drop PNG files here</h2>
+          <p id="dropHint">or choose PNG files from your computer</p>
+        </div>
+        <button class="choose-button" id="chooseButton" type="button">Choose files</button>
+      </div>
+
+      <div class="file-list" id="fileList" aria-live="polite"></div>
+
+      <div class="actions">
+        <button class="primary-button" id="convertButton" type="button" disabled>Convert</button>
+        <a class="download-button is-disabled" id="downloadLink" href="#" download aria-disabled="true">Download</a>
+      </div>
+
+      <p class="status" id="statusText" role="status">Choose files to get started.</p>
+    </section>
+  </main>
+
+  <script src="../vendor/pdf-lib.min.js"></script>
+  <script src="../vendor/pdf.min.js"></script>
+  <script src="../vendor/jszip.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
