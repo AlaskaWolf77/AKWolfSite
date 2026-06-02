@@ -15,7 +15,7 @@
   <header class="topbar">
     <div class="brand">
       <div class="logo-slot">
-        <a class="logo" href="/furry" aria-label="Home">
+        <a class="logo" href="/" aria-label="Home">
         <img src="logotesting2.svg" alt="AlaskaWolf logo">
     </a>
       </div>
@@ -34,8 +34,21 @@
     <nav class="nav" id="site-nav">
       <a href="#artwork">Artwork</a>
       <a href="#about">About</a>
-      <a href="tools/index.html">Tools</a>
-      <a class="external" href="https://github.com/alaskawolf77" target="_blank" rel="noreferrer">GitHub</a>
+      <div class="nav-dropdown">
+        <button
+          class="nav-dropdown-trigger"
+          type="button"
+          aria-expanded="false"
+          aria-haspopup="true"
+        >
+          Tools
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="tools/converter/index.html#png-to-pdf">PNG to PDF</a>
+          <a href="tools/converter/index.html#pdf-to-png">PDF to PNG</a>
+        </div>
+      </div>
+      <!--<a class="external" href="https://github.com/alaskawolf77" target="_blank" rel="noreferrer">GitHub</a>-->
     </nav>
   </header>
 
@@ -156,18 +169,6 @@
           <div class="card ink-secondary">
             <img class="art-preview" src="art/pendentFINAL2(1).png" alt="logos">
           </div>
-          <div class="card ink-secondary">
-            <img class="art-preview" src="art/jammingout.png" alt="logos">
-          </div>
-          <div class="card ink-secondary">
-            <img class="art-preview" src="art/GCCommision.png" alt="logos">
-          </div>
-          <div class="card ink-secondary">
-            <img class="art-preview" src="art/AlaskaWolf.jpg" alt="logos">
-          </div>
-          <div class="card ink-secondary">
-            <img class="art-preview" src="art/sketchwolf.png" alt="logos">
-          </div>
         </div>
       </div>
     </section>
@@ -190,7 +191,7 @@
       <div class="footer-links">
         <a href="#artwork">Artwork</a>
         <a href="#about">About</a>
-        <a href="https://github.com/AlaskaWolf77" target="_blank" rel="noreferrer">GitHub</a>
+        <!--<a href="https://github.com/AlaskaWolf77" target="_blank" rel="noreferrer">GitHub</a>-->
       </div>
     </div>
   </footer>
