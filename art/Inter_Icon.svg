@@ -2,46 +2,24 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="11in"
+   width="11.000001in"
    height="8.5in"
-   viewBox="0 0 279.40001 215.9"
+   viewBox="0 0 279.40003 215.9"
    version="1.1"
    id="svg160"
-   inkscape:version="1.3-dev (1:1.2.0-alpha1+devel+202302061506+2b6505adf0)"
-   sodipodi:docname="Inter_Icon.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview162"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:document-units="mm"
-     showgrid="false"
-     units="in"
-     inkscape:zoom="0.66257083"
-     inkscape:cx="899.52646"
-     inkscape:cy="464.10132"
-     inkscape:window-width="3440"
-     inkscape:window-height="1365"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="layer1"
-     inkscape:showpageshadow="0"
-     inkscape:deskcolor="#d1d1d1"
-     showguides="true" />
   <defs
      id="defs157" />
   <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
      id="layer1">
+    <rect
+       style="fill:#363636;fill-opacity:1;stroke:#000000;stroke-width:0.695854;stroke-linecap:round;stroke-linejoin:round"
+       id="rect1"
+       width="279.39999"
+       height="215.89999"
+       x="0"
+       y="0" />
     <path
        d="M 91.146493,118.08595 84.187548,105.19692 92.638325,90.829142 62.906962,73.606402 44.512509,105.19692 61.451643,135.37291 Z"
        style="color:#000000;display:inline;fill:#000000;stroke-width:1.14263;-inkscape-stroke:none;paint-order:fill markers stroke"
