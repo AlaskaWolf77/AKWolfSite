@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Metallic/Roughness Packer</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="../../index.html" aria-label="Home">
+      <img src="../../logotesting2.svg" alt="AlaskaWolf logo">
+    </a>
+    <nav class="nav">
+      <a href="../../index.html#artwork">Artwork</a>
+      <a href="../../index.html#about">About</a>
+      <a href="../index.html">Tools</a>
+    </nav>
+  </header>
+
+  <main class="tool-shell">
+    <section class="tool-panel" aria-labelledby="toolTitle">
+      <div class="tool-heading">
+        <p class="eyebrow">Offline tool</p>
+        <h1 id="toolTitle">Metallic/Roughness Packer</h1>
+      </div>
+
+      <div class="map-grid">
+        <div class="map-slot">
+          <h2>Metallic map</h2>
+          <div class="drop-zone" data-map="metallic">
+            <input id="metallicInput" class="file-input" type="file" accept="image/*">
+            <div class="drop-copy">
+              <p id="metallicName">Drop image here</p>
+              <span id="metallicMeta">or choose a grayscale image</span>
+            </div>
+            <button class="choose-button" type="button" data-input="metallicInput">Choose image</button>
+          </div>
+        </div>
+
+        <div class="map-slot">
+          <h2>Roughness map</h2>
+          <div class="drop-zone" data-map="roughness">
+            <input id="roughnessInput" class="file-input" type="file" accept="image/*">
+            <div class="drop-copy">
+              <p id="roughnessName">Drop image here</p>
+              <span id="roughnessMeta">or choose a grayscale image</span>
+            </div>
+            <button class="choose-button" type="button" data-input="roughnessInput">Choose image</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="primary-button" id="packButton" type="button" disabled>Start operation</button>
+        <button class="clear-button" id="clearButton" type="button">Clear images</button>
+        <a class="download-button is-disabled" id="downloadLink" href="#" download aria-disabled="true">Download PNG</a>
+      </div>
+
+      <p class="status" id="statusText" role="status">Choose both maps to get started.</p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
