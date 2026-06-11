@@ -67,7 +67,7 @@ function updateSlot(mapName) {
         zone.classList.add("has-file");
     } else {
         map.name.textContent = "Drop image here";
-        map.meta.textContent = "or choose a grayscale image";
+        map.meta.textContent = "or choose an image";
         zone.classList.remove("has-file");
     }
 }
@@ -145,14 +145,26 @@ function loadImageData(file) {
     });
 }
 
-function assertGrayscale(imageData, label) {
+function getGrayscaleValues(imageData) {
     const { data } = imageData;
+    const values = new Uint8ClampedArray(data.length / 4);
+    let converted = false;
 
     for (let index = 0; index < data.length; index += 4) {
-        if (data[index] !== data[index + 1] || data[index] !== data[index + 2]) {
-            throw new Error(`${label} must be grayscale.`);
+        const pixelIndex = index / 4;
+        const red = data[index];
+        const green = data[index + 1];
+        const blue = data[index + 2];
+
+        if (red === green && red === blue) {
+            values[pixelIndex] = red;
+        } else {
+            converted = true;
+            values[pixelIndex] = Math.round((0.2126 * red) + (0.7152 * green) + (0.0722 * blue));
         }
     }
+
+    return { values, converted };
 }
 
 async function packMaps() {
@@ -170,9 +182,9 @@ async function packMaps() {
             throw new Error("Images must have the same pixel dimensions.");
         }
 
-        setStatus("Validating grayscale maps...");
-        assertGrayscale(metallic, "Metallic map");
-        assertGrayscale(roughness, "Roughness map");
+        setStatus("Preparing grayscale map data...");
+        const metallicGray = getGrayscaleValues(metallic);
+        const roughnessGray = getGrayscaleValues(roughness);
 
         setStatus("Packing channels...");
         const canvas = document.createElement("canvas");
@@ -183,15 +195,26 @@ async function packMaps() {
         const output = context.createImageData(metallic.width, metallic.height);
 
         for (let index = 0; index < output.data.length; index += 4) {
-            output.data[index] = metallic.data[index];
+            const pixelIndex = index / 4;
+
+            output.data[index] = metallicGray.values[pixelIndex];
             output.data[index + 1] = 0;
             output.data[index + 2] = 0;
-            output.data[index + 3] = 255 - roughness.data[index];
+            output.data[index + 3] = 255 - roughnessGray.values[pixelIndex];
         }
 
         context.putImageData(output, 0, 0);
         setDownload(await canvasToBlob(canvas));
-        setStatus("Packed PNG ready.");
+
+        const convertedMaps = [];
+        if (metallicGray.converted) convertedMaps.push("metallic map");
+        if (roughnessGray.converted) convertedMaps.push("roughness map");
+
+        if (convertedMaps.length) {
+            setStatus(`Packed PNG ready. Warning: converted ${convertedMaps.join(" and ")} to grayscale.`);
+        } else {
+            setStatus("Packed PNG ready.");
+        }
     } catch (error) {
         setStatus(error.message || "Packing failed.");
     } finally {
