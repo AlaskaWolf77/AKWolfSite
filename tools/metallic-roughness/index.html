@@ -87,6 +87,48 @@
             </div>
             <button class="choose-button" type="button" data-input="metallicInput">Choose image</button>
           </div>
+
+          <div class="map-preview is-empty" id="metallicPreviewWrap">
+            <canvas id="metallicPreview" aria-label="Metallic map preview"></canvas>
+            <span>Preview appears here</span>
+          </div>
+
+          <div class="ramp-editor" data-ramp-map="metallic" aria-labelledby="metallicRampTitle">
+            <div class="ramp-heading">
+              <h3 id="metallicRampTitle">Metallic ramp</h3>
+              <button class="ramp-reset" type="button" data-ramp-reset="metallic">Reset</button>
+            </div>
+            <div class="ramp-track" data-ramp-track="metallic" aria-hidden="true">
+              <button class="ramp-handle" type="button" role="slider" data-ramp-map="metallic" data-stop="left" aria-label="Move metallic left stop"></button>
+              <button class="ramp-handle" type="button" role="slider" data-ramp-map="metallic" data-stop="right" aria-label="Move metallic right stop"></button>
+            </div>
+            <div class="ramp-stop-grid">
+              <fieldset class="ramp-stop" data-ramp-stop="left">
+                <legend>Left stop</legend>
+                <label>
+                  Position
+                  <input type="number" min="0" max="254" value="0" data-ramp-map="metallic" data-stop="left" data-field="position">
+                </label>
+                <label>
+                  Value
+                  <input type="range" min="0" max="255" value="0" data-ramp-map="metallic" data-stop="left" data-field="value">
+                  <input type="number" min="0" max="255" value="0" data-ramp-map="metallic" data-stop="left" data-field="value">
+                </label>
+              </fieldset>
+              <fieldset class="ramp-stop" data-ramp-stop="right">
+                <legend>Right stop</legend>
+                <label>
+                  Position
+                  <input type="number" min="1" max="255" value="255" data-ramp-map="metallic" data-stop="right" data-field="position">
+                </label>
+                <label>
+                  Value
+                  <input type="range" min="0" max="255" value="255" data-ramp-map="metallic" data-stop="right" data-field="value">
+                  <input type="number" min="0" max="255" value="255" data-ramp-map="metallic" data-stop="right" data-field="value">
+                </label>
+              </fieldset>
+            </div>
+          </div>
         </div>
 
         <div class="map-slot">
@@ -99,6 +141,48 @@
             </div>
             <button class="choose-button" type="button" data-input="roughnessInput">Choose image</button>
           </div>
+
+          <div class="map-preview is-empty" id="roughnessPreviewWrap">
+            <canvas id="roughnessPreview" aria-label="Roughness map preview"></canvas>
+            <span>Preview appears here</span>
+          </div>
+
+          <div class="ramp-editor" data-ramp-map="roughness" aria-labelledby="roughnessRampTitle">
+            <div class="ramp-heading">
+              <h3 id="roughnessRampTitle">Roughness ramp</h3>
+              <button class="ramp-reset" type="button" data-ramp-reset="roughness">Reset</button>
+            </div>
+            <div class="ramp-track" data-ramp-track="roughness" aria-hidden="true">
+              <button class="ramp-handle" type="button" role="slider" data-ramp-map="roughness" data-stop="left" aria-label="Move roughness left stop"></button>
+              <button class="ramp-handle" type="button" role="slider" data-ramp-map="roughness" data-stop="right" aria-label="Move roughness right stop"></button>
+            </div>
+            <div class="ramp-stop-grid">
+              <fieldset class="ramp-stop" data-ramp-stop="left">
+                <legend>Left stop</legend>
+                <label>
+                  Position
+                  <input type="number" min="0" max="254" value="0" data-ramp-map="roughness" data-stop="left" data-field="position">
+                </label>
+                <label>
+                  Value
+                  <input type="range" min="0" max="255" value="0" data-ramp-map="roughness" data-stop="left" data-field="value">
+                  <input type="number" min="0" max="255" value="0" data-ramp-map="roughness" data-stop="left" data-field="value">
+                </label>
+              </fieldset>
+              <fieldset class="ramp-stop" data-ramp-stop="right">
+                <legend>Right stop</legend>
+                <label>
+                  Position
+                  <input type="number" min="1" max="255" value="255" data-ramp-map="roughness" data-stop="right" data-field="position">
+                </label>
+                <label>
+                  Value
+                  <input type="range" min="0" max="255" value="255" data-ramp-map="roughness" data-stop="right" data-field="value">
+                  <input type="number" min="0" max="255" value="255" data-ramp-map="roughness" data-stop="right" data-field="value">
+                </label>
+              </fieldset>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -106,6 +190,12 @@
         <button class="primary-button" id="packButton" type="button" disabled>Start operation</button>
         <button class="clear-button" id="clearButton" type="button">Clear images</button>
         <a class="download-button is-disabled" id="downloadLink" href="#" download aria-disabled="true">Download PNG</a>
+      </div>
+
+      <div class="output-preview is-empty" id="outputPreviewWrap">
+        <h2>Packed output</h2>
+        <canvas id="outputPreview" aria-label="Packed output preview"></canvas>
+        <span>Output preview appears after packing</span>
       </div>
 
       <p class="status" id="statusText" role="status">Choose both maps to get started.</p>
