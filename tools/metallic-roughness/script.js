@@ -8,6 +8,11 @@ const packButton = document.getElementById("packButton");
 const clearButton = document.getElementById("clearButton");
 const downloadLink = document.getElementById("downloadLink");
 const statusText = document.getElementById("statusText");
+const homogeneousMapSelect = document.getElementById("homogeneousMapSelect");
+const homogeneousValueControl = document.getElementById("homogeneousValueControl");
+const homogeneousValue = document.getElementById("homogeneousValue");
+const homogeneousValueOutput = document.getElementById("homogeneousValueOutput");
+const roughnessInvertToggle = document.getElementById("roughnessInvertToggle");
 
 const maps = {
     metallic: {
@@ -61,29 +66,108 @@ function updateSlot(mapName) {
     const map = maps[mapName];
     const zone = document.querySelector(`[data-map="${mapName}"]`);
 
-    if (map.file) {
+    if (isGeneratedMap(mapName)) {
+        map.name.textContent = `${formatMapName(mapName)} generated`;
+        map.meta.textContent = getGeneratedMapMeta(mapName);
+        zone.classList.remove("has-file");
+        zone.classList.add("is-generated");
+    } else if (map.file) {
         map.name.textContent = map.file.name;
         map.meta.textContent = formatBytes(map.file.size);
         zone.classList.add("has-file");
+        zone.classList.remove("is-generated");
     } else {
         map.name.textContent = "Drop image here";
         map.meta.textContent = "or choose an image";
         zone.classList.remove("has-file");
+        zone.classList.remove("is-generated");
     }
 }
 
+function formatMapName(mapName) {
+    return `${mapName.charAt(0).toUpperCase()}${mapName.slice(1)} map`;
+}
+
+function isHomogeneousMode() {
+    return getGeneratedMapName() !== "none";
+}
+
+function getGeneratedMapName() {
+    return homogeneousMapSelect.value;
+}
+
+function isGeneratedMap(mapName) {
+    return isHomogeneousMode() && getGeneratedMapName() === mapName;
+}
+
+function getRequiredMapName() {
+    return getGeneratedMapName() === "metallic" ? "roughness" : "metallic";
+}
+
+function getHomogeneousValue() {
+    return Number(homogeneousValue.value);
+}
+
+function shouldInvertRoughness() {
+    return roughnessInvertToggle.checked;
+}
+
+function getPackedRoughnessValue(value) {
+    return shouldInvertRoughness() ? 255 - value : value;
+}
+
+function getGeneratedMapMeta(mapName) {
+    const value = getHomogeneousValue();
+
+    if (mapName !== "roughness") {
+        return `Homogeneous value ${value}`;
+    }
+
+    return `Homogeneous value ${value}, packed alpha ${getPackedRoughnessValue(value)}`;
+}
+
+function getReadyState() {
+    if (!isHomogeneousMode()) {
+        return {
+            ready: Boolean(maps.metallic.file && maps.roughness.file),
+            message: "Choose both maps to get started.",
+        };
+    }
+
+    const requiredMapName = getRequiredMapName();
+    return {
+        ready: Boolean(maps[requiredMapName].file),
+        message: `Choose a ${requiredMapName} map to combine with the generated ${getGeneratedMapName()} map.`,
+    };
+}
+
 function updateControls() {
-    const ready = Boolean(maps.metallic.file && maps.roughness.file);
+    const { ready, message } = getReadyState();
     packButton.disabled = !ready;
+    homogeneousValueControl.classList.toggle("is-hidden", !isHomogeneousMode());
+    homogeneousValueOutput.textContent = String(getHomogeneousValue());
+
+    Object.entries(maps).forEach(([mapName, map]) => {
+        const generated = isGeneratedMap(mapName);
+        const zone = document.querySelector(`[data-map="${mapName}"]`);
+        const chooseButton = zone.querySelector(".choose-button");
+
+        map.input.disabled = generated;
+        chooseButton.disabled = generated;
+        zone.setAttribute("aria-disabled", String(generated));
+        updateSlot(mapName);
+    });
 
     if (!ready) {
-        setStatus("Choose both maps to get started.");
+        setStatus(message);
     } else {
-        setStatus("Both maps ready.");
+        setStatus(isHomogeneousMode() ? "Uploaded map and homogeneous map ready." : "Both maps ready.");
     }
 }
 
 function setMapFile(mapName, file) {
+    if (isGeneratedMap(mapName)) return;
+
     maps[mapName].file = file || null;
     maps[mapName].input.value = "";
     resetDownload();
@@ -96,6 +180,9 @@ function clearImages() {
     maps.roughness.file = null;
     metallicInput.value = "";
     roughnessInput.value = "";
+    homogeneousMapSelect.value = "none";
+    homogeneousValue.value = "128";
+    roughnessInvertToggle.checked = true;
     resetDownload();
     updateSlot("metallic");
     updateSlot("roughness");
@@ -167,32 +254,53 @@ function getGrayscaleValues(imageData) {
     return { values, converted };
 }
 
+function getHomogeneousGrayscaleValues(width, height) {
+    const values = new Uint8ClampedArray(width * height);
+    values.fill(getHomogeneousValue());
+    return { values, converted: false, generated: true };
+}
+
 async function packMaps() {
     packButton.disabled = true;
     resetDownload();
 
     try {
         setStatus("Reading maps...");
-        const [metallic, roughness] = await Promise.all([
-            loadImageData(maps.metallic.file),
-            loadImageData(maps.roughness.file),
-        ]);
+        let metallic = null;
+        let roughness = null;
 
-        if (metallic.width !== roughness.width || metallic.height !== roughness.height) {
+        if (isHomogeneousMode()) {
+            const requiredMapName = getRequiredMapName();
+            const uploaded = await loadImageData(maps[requiredMapName].file);
+
+            if (requiredMapName === "metallic") {
+                metallic = uploaded;
+            } else {
+                roughness = uploaded;
+            }
+        } else {
+            [metallic, roughness] = await Promise.all([
+                loadImageData(maps.metallic.file),
+                loadImageData(maps.roughness.file),
+            ]);
+        }
+
+        if (!isHomogeneousMode() && (metallic.width !== roughness.width || metallic.height !== roughness.height)) {
             throw new Error("Images must have the same pixel dimensions.");
         }
 
         setStatus("Preparing grayscale map data...");
-        const metallicGray = getGrayscaleValues(metallic);
-        const roughnessGray = getGrayscaleValues(roughness);
+        const baseMap = metallic || roughness;
+        const metallicGray = metallic ? getGrayscaleValues(metallic) : getHomogeneousGrayscaleValues(baseMap.width, baseMap.height);
+        const roughnessGray = roughness ? getGrayscaleValues(roughness) : getHomogeneousGrayscaleValues(baseMap.width, baseMap.height);
 
         setStatus("Packing channels...");
         const canvas = document.createElement("canvas");
-        canvas.width = metallic.width;
-        canvas.height = metallic.height;
+        canvas.width = baseMap.width;
+        canvas.height = baseMap.height;
 
         const context = canvas.getContext("2d");
-        const output = context.createImageData(metallic.width, metallic.height);
+        const output = context.createImageData(baseMap.width, baseMap.height);
 
         for (let index = 0; index < output.data.length; index += 4) {
             const pixelIndex = index / 4;
@@ -200,7 +308,7 @@ async function packMaps() {
             output.data[index] = metallicGray.values[pixelIndex];
             output.data[index + 1] = 0;
             output.data[index + 2] = 0;
-            output.data[index + 3] = 255 - roughnessGray.values[pixelIndex];
+            output.data[index + 3] = getPackedRoughnessValue(roughnessGray.values[pixelIndex]);
         }
 
         context.putImageData(output, 0, 0);
@@ -210,20 +318,27 @@ async function packMaps() {
         if (metallicGray.converted) convertedMaps.push("metallic map");
         if (roughnessGray.converted) convertedMaps.push("roughness map");
 
+        const roughnessModeNote = shouldInvertRoughness() ? "" : " Roughness was not inverted.";
+
         if (convertedMaps.length) {
-            setStatus(`Packed PNG ready. Warning: converted ${convertedMaps.join(" and ")} to grayscale.`);
+            setStatus(`Packed PNG ready. Warning: converted ${convertedMaps.join(" and ")} to grayscale.${roughnessModeNote}`);
+        } else if (isHomogeneousMode()) {
+            setStatus(`Packed PNG ready with generated ${getGeneratedMapName()} map.${roughnessModeNote}`);
         } else {
-            setStatus("Packed PNG ready.");
+            setStatus(`Packed PNG ready.${roughnessModeNote}`);
         }
     } catch (error) {
         setStatus(error.message || "Packing failed.");
     } finally {
-        packButton.disabled = !(maps.metallic.file && maps.roughness.file);
+        packButton.disabled = !getReadyState().ready;
     }
 }
 
 document.querySelectorAll(".choose-button").forEach((button) => {
     button.addEventListener("click", () => {
+        const zone = button.closest(".drop-zone");
+        if (zone && isGeneratedMap(zone.dataset.map)) return;
+
         document.getElementById(button.dataset.input).click();
     });
 });
@@ -237,6 +352,8 @@ Object.entries(maps).forEach(([mapName, map]) => {
 document.querySelectorAll(".drop-zone").forEach((zone) => {
     zone.addEventListener("dragover", (event) => {
         event.preventDefault();
+        if (isGeneratedMap(zone.dataset.map)) return;
+
         zone.classList.add("is-dragging");
     });
 
@@ -247,8 +364,25 @@ document.querySelectorAll(".drop-zone").forEach((zone) => {
     zone.addEventListener("drop", (event) => {
         event.preventDefault();
         zone.classList.remove("is-dragging");
+        if (isGeneratedMap(zone.dataset.map)) return;
+
         setMapFile(zone.dataset.map, event.dataTransfer.files[0]);
     });
+});
+
+homogeneousMapSelect.addEventListener("change", () => {
+    resetDownload();
+    updateControls();
+});
+
+homogeneousValue.addEventListener("input", () => {
+    resetDownload();
+    updateControls();
+});
+
+roughnessInvertToggle.addEventListener("change", () => {
+    resetDownload();
+    updateControls();
 });
 
 packButton.addEventListener("click", packMaps);

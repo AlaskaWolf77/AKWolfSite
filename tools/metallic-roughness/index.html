@@ -27,6 +27,30 @@
         <h1 id="toolTitle">Metallic/Roughness Packer</h1>
       </div>
 
+      <div class="homogeneous-controls">
+        <label class="roughness-invert-toggle">
+          <input id="roughnessInvertToggle" type="checkbox" checked>
+          <span>invert roughness value</span>
+        </label>
+
+        <label class="homogeneous-select-label" for="homogeneousMapSelect">
+          Homogeneous map
+          <select id="homogeneousMapSelect">
+            <option value="none">dont use homogeneous map</option>
+            <option value="metallic">Metallic</option>
+            <option value="roughness">Roughness</option>
+          </select>
+        </label>
+
+        <label class="homogeneous-value is-hidden" id="homogeneousValueControl" for="homogeneousValue">
+          Value
+          <span class="slider-row">
+            <input id="homogeneousValue" type="range" min="0" max="255" value="128">
+            <output id="homogeneousValueOutput" for="homogeneousValue">128</output>
+          </span>
+        </label>
+      </div>
+
       <div class="map-grid">
         <div class="map-slot">
           <h2>Metallic map</h2>
