@@ -18,10 +18,34 @@
       </div>
     </div>
 
-    <nav class="nav">
+    <button
+      class="nav-toggle"
+      type="button"
+      aria-label="Toggle navigation menu"
+      aria-controls="site-nav"
+      aria-expanded="false"
+    >
+      <img src="../menuIcon.svg" alt="Menu icon">
+    </button>
+
+    <nav class="nav" id="site-nav">
       <a href="../index.html#artwork">Artwork</a>
       <a href="../index.html#about">About</a>
-      <a href="index.html">Tools</a>
+      <div class="nav-dropdown">
+        <button
+          class="nav-dropdown-trigger"
+          type="button"
+          aria-expanded="false"
+          aria-haspopup="true"
+        >
+          Tools
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="converter/index.html#png-to-pdf">PNG to PDF</a>
+          <a href="converter/index.html#pdf-to-png">PDF to PNG</a>
+          <a href="metallic-roughness/index.html">Texture Packer</a>
+        </div>
+      </div>
     </nav>
   </header>
 
@@ -45,5 +69,7 @@
       </div>
     </section>
   </main>
+
+  <script src="nav.js"></script>
 </body>
 </html>
