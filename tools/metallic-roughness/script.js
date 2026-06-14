@@ -603,19 +603,40 @@ function getClosestStopName(mapName, position) {
 
 function startRampDrag(mapName, stopName, event) {
     const track = document.querySelector(`[data-ramp-track="${mapName}"]`);
+    document.body.classList.add("is-ramp-dragging");
+
+    if (track.setPointerCapture && event.pointerId !== undefined) {
+        try {
+            track.setPointerCapture(event.pointerId);
+        } catch (error) {
+            // Some browsers can reject capture if the pointer is already gone.
+        }
+    }
 
     function updateFromPointer(pointerEvent) {
+        pointerEvent.preventDefault();
         setRampStop(mapName, stopName, "position", getTrackPosition(track, pointerEvent.clientX));
     }
 
     function endDrag() {
+        document.body.classList.remove("is-ramp-dragging");
         document.removeEventListener("pointermove", updateFromPointer);
         document.removeEventListener("pointerup", endDrag);
+        document.removeEventListener("pointercancel", endDrag);
+
+        if (track.releasePointerCapture && track.hasPointerCapture && event.pointerId !== undefined && track.hasPointerCapture(event.pointerId)) {
+            try {
+                track.releasePointerCapture(event.pointerId);
+            } catch (error) {
+                // Capture may already be released if the pointer was cancelled.
+            }
+        }
     }
 
     updateFromPointer(event);
     document.addEventListener("pointermove", updateFromPointer);
     document.addEventListener("pointerup", endDrag, { once: true });
+    document.addEventListener("pointercancel", endDrag, { once: true });
 }
 
 async function packMaps() {
@@ -743,6 +764,7 @@ document.querySelectorAll("[data-ramp-reset]").forEach((button) => {
 
 document.querySelectorAll("[data-ramp-track]").forEach((track) => {
     track.addEventListener("pointerdown", (event) => {
+        event.preventDefault();
         const mapName = track.dataset.rampTrack;
         const targetHandle = event.target.closest(".ramp-handle");
         const position = getTrackPosition(track, event.clientX);
