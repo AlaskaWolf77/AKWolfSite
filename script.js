@@ -9,6 +9,9 @@ const artworkRevealGrid = document.querySelector("#artwork .reveal-sequence");
 const topbar = document.querySelector(".topbar");
 const navToggle = document.querySelector(".nav-toggle");
 const nav = document.getElementById("site-nav");
+const navDropdown = document.querySelector(".nav-dropdown");
+const navDropdownTrigger = document.querySelector(".nav-dropdown-trigger");
+const mobileScrollMediaQuery = window.matchMedia("(max-width: 800px)");
 
 function clamp(n, min, max) {
     return Math.max(min, Math.min(max, n));
@@ -21,18 +24,19 @@ function easeOutCubic(t) {
 function onScroll() {
     const rect = hero.getBoundingClientRect();
     const heroHeight = hero.offsetHeight;
+    const isMobile = mobileScrollMediaQuery.matches;
 
     const scrolled = clamp(-rect.top, 0, heroHeight);
     const progressRaw = clamp(scrolled / heroHeight, 0, 1);
     const progress = easeOutCubic(progressRaw);
 
-    const parallaxY = progressRaw * 80;
+    const parallaxY = progressRaw * (isMobile ? 28 : 80);
     heroBg.style.transform = `translate3d(0, ${parallaxY}px, 0) scale(1.02)`;
     heroBg.style.opacity = String(1 - progressRaw * 0.95);
 
     heroFade.style.opacity = String(0.25 + progressRaw * 0.75);
 
-    const topTextY = progressRaw * 800;
+    const topTextY = progressRaw * (isMobile ? 220 : 800);
     heroTopText.style.transform = `translate3d(0, ${topTextY}px, 0)`;
 }
 
@@ -45,6 +49,17 @@ function setMobileNav(open) {
 
     topbar.classList.toggle("is-nav-open", open);
     navToggle.setAttribute("aria-expanded", String(open));
+
+    if (!open) {
+        setNavDropdown(false);
+    }
+}
+
+function setNavDropdown(open) {
+    if (!navDropdown || !navDropdownTrigger) return;
+
+    navDropdown.classList.toggle("is-open", open);
+    navDropdownTrigger.setAttribute("aria-expanded", String(open));
 }
 
 if (topbar && navToggle && nav) {
@@ -67,12 +82,25 @@ if (topbar && navToggle && nav) {
     document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") {
             setMobileNav(false);
+            setNavDropdown(false);
         }
     });
 
     window.addEventListener("resize", () => {
         if (window.innerWidth > 800) {
             setMobileNav(false);
+        }
+    });
+}
+
+if (navDropdown && navDropdownTrigger) {
+    navDropdownTrigger.addEventListener("click", () => {
+        setNavDropdown(!navDropdown.classList.contains("is-open"));
+    });
+
+    document.addEventListener("click", (event) => {
+        if (event.target instanceof Node && !navDropdown.contains(event.target)) {
+            setNavDropdown(false);
         }
     });
 }
@@ -118,6 +146,23 @@ if (artworkRevealGrid) {
     }
 }
 
-window.addEventListener("scroll", onScroll, { passive: true });
+let mobileScrollTicking = false;
+
+function onScrollEvent() {
+    if (!mobileScrollMediaQuery.matches) {
+        onScroll();
+        return;
+    }
+
+    if (mobileScrollTicking) return;
+
+    mobileScrollTicking = true;
+    window.requestAnimationFrame(() => {
+        onScroll();
+        mobileScrollTicking = false;
+    });
+}
+
+window.addEventListener("scroll", onScrollEvent, { passive: true });
 window.addEventListener("resize", onScroll);
 onScroll();
